@@ -9,9 +9,9 @@ export default function App() {
   const [seccionActiva, setSeccionActiva] = useState("Inicio");
 
   return (
-    <div className="flex">
+    <div className="flex flex-col md:flex-row min-h-screen">
       <NavBar cambiarSeccion={setSeccionActiva} />
-      <div className="flex-1 p-8">
+      <div className="flex-1 p-4 md:p-8 bg-gray-50">
         {seccionActiva === "Inicio" && <Inicio />}
         {seccionActiva === "Empleados" && <Empleados />}
         {seccionActiva === "Asistencias" && <Asistencias />}
