@@ -23,9 +23,9 @@ function MainContent() {
     return <h1 className="text-center text-2xl mt-20">Cargando...</h1>;
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen">
+    <div className="flex flex-col md:flex-row min-h-screen w-full overflow-hidden">
       {user && <NavBar />}
-      <div className="flex-1 p-4 md:p-8 bg-gray-50">
+      <div className="flex-1 p-4 md:p-8 bg-gray-50 overflow-x-auto">
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route

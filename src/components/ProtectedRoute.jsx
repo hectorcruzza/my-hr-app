@@ -7,7 +7,9 @@ export default function ProtectedRoute({ children }) {
   if (loading)
     return <h1 className="text-center text-2xl mt-20">Cargando...</h1>;
 
-  if (!user) return <Navigate to="login" />;
+  if (!user) return <Navigate to="/login" />;
+
+  // console.log(user);
 
   return <>{children}</>;
 }

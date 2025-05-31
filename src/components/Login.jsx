@@ -8,17 +8,17 @@ export default function Login() {
     password: "",
   });
 
-  const { signin } = useAuth();
+  const { signin, signInWithGoogle } = useAuth();
   const navigate = useNavigate();
-  const [error, setError] = useState();
+  const [error, setError] = useState(null);
 
   const handleChange = ({ target: { name, value } }) => {
+    if (error) setError(null);
     setUser({ ...user, [name]: value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
 
     try {
       await signin(user.email, user.password);
@@ -28,31 +28,19 @@ export default function Login() {
     }
   };
 
+  const handleGoogleSignIn = async () => {
+    try {
+      await signInWithGoogle();
+      navigate("/");
+    } catch (error) {
+      handleErrors(error.code);
+    }
+  };
+
   const handleErrors = (code) => {
     switch (code) {
-      case "auth/invalid-email":
-        setError("El correo ingresado no es válido.");
-        break;
-      case "auth/user-disabled":
-        setError("Esta cuenta ha sido deshabilitada.");
-        break;
-      case "auth/user-not-found":
-        setError("El usuario no existe. Verifique su correo.");
-        break;
-      case "auth/wrong-password":
-        setError("La contraseña ingresada es incorrecta.");
-        break;
-      case "auth/missing-password":
-        setError("Ingrese la contraseña.");
-        break;
-      case "auth/too-many-requests":
-        setError("Demasiados intentos fallidos. Intente más tarde.");
-        break;
-      case "auth/network-request-failed":
-        setError("Error de red. Verifique su conexión.");
-        break;
-      case "auth/internal-error":
-        setError("Ocurrió un error inesperado. Intente nuevamente.");
+      case "auth/invalid-credential":
+        setError("Las credenciales ingresadas no son válidas.");
         break;
       default:
         setError("Ocurrió un error al iniciar sesión.");
@@ -108,6 +96,14 @@ export default function Login() {
             className="w-full bg-red-900 text-white py-2 rounded hover:bg-red-800 transition"
           >
             Iniciar sesión
+          </button>
+
+          <button
+            type="button"
+            className="w-full bg-red-900 text-white py-2 rounded hover:bg-red-800 transition"
+            onClick={handleGoogleSignIn}
+          >
+            Iniciar con Google
           </button>
         </form>
       </div>

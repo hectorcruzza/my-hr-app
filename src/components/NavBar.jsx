@@ -4,8 +4,16 @@ import { useAuth } from "../context/authContext";
 export default function NavBar() {
   const { user, signout } = useAuth();
 
+  const handleSignOut = async () => {
+    try {
+      await signout();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <nav className="w-full md:w-64 bg-red-900 text-white flex md:flex-col items-center md:items-start p-4 space-y-0 md:space-y-4">
+    <nav className="w-full md:w-64 bg-red-900 text-white flex md:flex-col items-center md:items-start p-4 space-y-0 md:space-y-4 shrink-0">
       <div className="flex items-center space-x-2 mb-4 md:mb-6">
         <img
           src="vite.svg"
@@ -38,11 +46,13 @@ export default function NavBar() {
         </Link>
       </div>
 
-      <div className="mt-4 md:mt-auto flex justify-between items-center w-full">
-        <span className="text-sm">{user.email}</span>
+      <div className="mt-4 md:mt-auto w-full text-center">
+        <span className="text-sm block mb-1">
+          {user.displayName || user.email}
+        </span>
         <button
-          onClick={signout}
-          className="bg-red-700 px-3 py-1 rounded text-sm ml-4"
+          onClick={handleSignOut}
+          className="text-sm text-white hover:underline"
         >
           Cerrar sesión
         </button>
