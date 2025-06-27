@@ -1,30 +1,19 @@
-export default function TablaEmpleados({ onSeleccionar }) {
-  const empleados = [
-    {
-      id: 1,
-      nombre: "Héctor Cruz",
-      puesto: "Diseñador UX",
-      area: "Marketing",
-      correo: "hector@gmail.com",
-      telefono: "981-135-1094"
-    },
-    {
-      id: 2,
-      nombre: "Victoria Cruz",
-      puesto: "Analista RH",
-      area: "Recursos Humanos",
-      correo: "victoria@gmail.com",
-      telefono: "981-171-9793"
-    },
-    {
-      id: 3,
-      nombre: "Pedro Cruz",
-      puesto: "Desarrollador",
-      area: "TI",
-      correo: "pedro@gmail.com",
-      telefono: "981-126-5174"
-    },
-  ];
+export default function TablaEmpleados({ empleados, onSeleccionar, loading }) {
+  if (loading) {
+    return (
+      <div className="mt-6 text-center text-gray-600">
+        Cargando empleados...
+      </div>
+    );
+  }
+
+  if (empleados.length === 0) {
+    return (
+      <div className="mt-6 text-center text-gray-600">
+        No hay empleados registrados.
+      </div>
+    );
+  }
 
   return (
     <table className="w-full mt-6 border border-gray-300">

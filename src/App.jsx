@@ -4,20 +4,20 @@ import Inicio from "./components/Inicio";
 import Empleados from "./components/Empleados/Empleados";
 import Asistencias from "./components/Asistencias";
 import Reportes from "./components/Reportes";
-import { AuthProvider, useAuth } from "./context/authContext";
+import { GlobalProvider, useGlobal } from "./context/globalContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Login from "./components/Login";
 
 export default function App() {
   return (
-    <AuthProvider>
+    <GlobalProvider>
       <MainContent />
-    </AuthProvider>
+    </GlobalProvider>
   );
 }
 
 function MainContent() {
-  const { user, loading } = useAuth();
+  const { user, loading } = useGlobal();
 
   if (loading)
     return <h1 className="text-center text-2xl mt-20">Cargando...</h1>;

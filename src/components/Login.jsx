@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAuth } from "../context/authContext";
+import { useGlobal } from "../context/globalContext";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
@@ -8,7 +8,7 @@ export default function Login() {
     password: "",
   });
 
-  const { signin, signInWithGoogle } = useAuth();
+  const { signin, signInWithGoogle } = useGlobal();
   const navigate = useNavigate();
   const [error, setError] = useState(null);
 

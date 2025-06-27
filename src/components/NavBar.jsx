@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import { useAuth } from "../context/authContext";
+import { useGlobal } from "../context/globalContext";
 
 export default function NavBar() {
-  const { user, signout } = useAuth();
+  const { user, signout } = useGlobal();
 
   const handleSignOut = async () => {
     try {
@@ -16,7 +16,7 @@ export default function NavBar() {
     <nav className="w-full md:w-64 bg-red-900 text-white flex md:flex-col items-center md:items-start p-4 space-y-0 md:space-y-4 shrink-0">
       <div className="flex items-center space-x-2 mb-4 md:mb-6">
         <img
-          src="vite.svg"
+          src="logo.png"
           alt="Logo HR"
           className="w-8 h-8 rounded-full object-cover"
         />
