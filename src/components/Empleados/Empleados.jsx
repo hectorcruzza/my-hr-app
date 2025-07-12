@@ -5,10 +5,13 @@ import { useGlobal } from "../../context/globalContext";
 import FormAgregarEmpleado from "./FormAgregarEmpleado";
 
 export default function Empleados() {
-  const [loadingEmpleados, setLoadingEmpleados] = useState(true);
-  const { getEmpleados, addEmpleado } = useGlobal();
+  const { getEmpleados, addEmpleado, updateEmpleado, deleteEmpleado } =
+    useGlobal();
   const [empleados, setEmpleados] = useState([]);
+  const [loadingEmpleados, setLoadingEmpleados] = useState(true);
   const [empleadoSeleccionado, setEmpleadoSeleccionado] = useState(null);
+  const [mostrarForms, setMostrarForms] = useState(false);
+  const [enEdicion, setEnEdicion] = useState(false);
   const [nuevoEmpleado, setNuevoEmpleado] = useState({
     nombre: "",
     puesto: "",
@@ -16,7 +19,6 @@ export default function Empleados() {
     correo: "",
     telefono: "",
   });
-  const [mostrarForms, setMostrarForms] = useState(false);
 
   useEffect(() => {
     cargarEmpleados();
@@ -31,6 +33,7 @@ export default function Empleados() {
 
   const handleSeleccionar = (empleado) => {
     setEmpleadoSeleccionado(empleado);
+    setEnEdicion(false);
   };
 
   const handleChange = (e) => {
@@ -48,7 +51,38 @@ export default function Empleados() {
       telefono: "",
     });
     setMostrarForms(false);
+    setEmpleadoSeleccionado(null);
     cargarEmpleados();
+  };
+
+  const iniciarEdicion = () => {
+    setEnEdicion(true);
+  };
+
+  const cancelarEdicion = () => {
+    setEnEdicion(false);
+  };
+
+  const guardarEdicion = async (datosEditados) => {
+    await updateEmpleado(empleadoSeleccionado.id, datosEditados);
+    setEnEdicion(false);
+    setEmpleadoSeleccionado(null);
+    cargarEmpleados();
+  };
+
+  const eliminarEmpleado = async (id) => {
+    const confirmacion = window.confirm(
+      "¿Estás seguro de eliminar este empleado?"
+    );
+    if (!confirmacion) return;
+    await deleteEmpleado(id);
+    setEmpleadoSeleccionado(null);
+    cargarEmpleados();
+  };
+
+  const handleChangeEdicion = (e, setEditable) => {
+    const { name, value } = e.target;
+    setEditable((prev) => ({ ...prev, [name]: value }));
   };
 
   return (
@@ -68,10 +102,21 @@ export default function Empleados() {
             empleados={empleados}
             onSeleccionar={handleSeleccionar}
             loading={loadingEmpleados}
+            onEditar={iniciarEdicion}
+            onEliminar={eliminarEmpleado}
+            empleadoSeleccionado={empleadoSeleccionado}
           />
         </div>
         <div className="flex-1">
-          <EmpleadoCard empleado={empleadoSeleccionado} />
+          <EmpleadoCard
+            empleado={empleadoSeleccionado}
+            enEdicion={enEdicion}
+            handleChangeEdicion={handleChangeEdicion}
+            handleGuardarEdicion={guardarEdicion}
+            handleCancelarEdicion={cancelarEdicion}
+            handleEliminar={eliminarEmpleado}
+            iniciarEdicion={iniciarEdicion}
+          />
         </div>
       </div>
 

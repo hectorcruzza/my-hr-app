@@ -6,7 +6,14 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
-import { collection, addDoc, getDocs } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  doc,
+  deleteDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { auth, db } from "../firebase/firebase";
 
 export const globalContext = createContext();
@@ -42,6 +49,16 @@ export function GlobalProvider({ children }) {
     return addDoc(empleadosCollection, empleado);
   };
 
+  const updateEmpleado = (id, nuevosDatos) => {
+    const empleadoDoc = doc(db, "empleados", id);
+    return updateDoc(empleadoDoc, nuevosDatos);
+  };
+
+  const deleteEmpleado = (id) => {
+    const empleadoDoc = doc(db, "empleados", id);
+    return deleteDoc(empleadoDoc);
+  };
+
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
@@ -59,6 +76,8 @@ export function GlobalProvider({ children }) {
         loading,
         getEmpleados,
         addEmpleado,
+        updateEmpleado,
+        deleteEmpleado,
       }}
     >
       {children}
